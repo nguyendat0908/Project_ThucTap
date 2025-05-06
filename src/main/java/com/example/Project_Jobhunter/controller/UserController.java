@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Project_Jobhunter.domain.User;
+import com.example.Project_Jobhunter.dto.response.ResUserDTO;
 import com.example.Project_Jobhunter.service.UserService;
+import com.example.Project_Jobhunter.util.annotation.ApiMessage;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,33 +31,43 @@ public class UserController {
 
     // Create a new user
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.handleCreateUser(user));
+    @ApiMessage("Create a new user")
+    public ResponseEntity<ResUserDTO> createUser(@RequestBody User user) {
+        User newUser = this.userService.handleCreateUser(user);
+        return ResponseEntity.ok(this.userService.convertToResUserDTO(newUser));
     }
 
     // Get a user by ID
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(this.userService.handleGetUserById(id));
+    @ApiMessage("Get user by ID")
+    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") UUID id) {
+        User user = this.userService.handleGetUserById(id);
+        return ResponseEntity.ok(this.userService.convertToResUserDTO(user));
     }
 
     // Get list users
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getListUsers() {
-        return ResponseEntity.ok(this.userService.handleGetUsers());
+    @ApiMessage("Get list users")
+    public ResponseEntity<List<ResUserDTO>> getListUsers() {
+        List<User> users = this.userService.handleGetUsers();
+        List<ResUserDTO> resUserDTOs = users.stream().map(user -> this.userService.convertToResUserDTO(user)).toList();
+        return ResponseEntity.ok(resUserDTOs);
     }
 
     // Update a user
     @PutMapping("/users")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        return ResponseEntity.ok(this.userService.handleUpdateUser(user));
+    @ApiMessage("Update a user")
+    public ResponseEntity<ResUserDTO> updateUser(@RequestBody User user) {
+        User updatedUser = this.userService.handleUpdateUser(user);
+        return ResponseEntity.ok(this.userService.convertToResUserDTO(updatedUser));
     }
 
     // Delete a user
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") UUID id) {
+    @ApiMessage("Delete a user")
+    public ResponseEntity<Void> deleteUserById(@PathVariable("id") UUID id) {
         this.userService.handleDeleteUserById(id);
-        return ResponseEntity.ok("User deleted successfully");
+        return ResponseEntity.ok(null);
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.Project_Jobhunter.domain.User;
+import com.example.Project_Jobhunter.dto.response.ResUserDTO;
 import com.example.Project_Jobhunter.repository.UserRepository;
 
 @Service
@@ -56,5 +57,24 @@ public class UserService {
     // Delete a user
     public void handleDeleteUserById(UUID id) {
         this.userRepository.deleteById(id);
+    }
+
+    // Convert User to ResUserDTO
+    public ResUserDTO convertToResUserDTO(User user) {
+        ResUserDTO resUserDTO = new ResUserDTO();
+
+        resUserDTO.setId(user.getId());
+        resUserDTO.setName(user.getName());
+        resUserDTO.setEmail(user.getEmail());
+        resUserDTO.setAddress(user.getAddress());
+        resUserDTO.setAge(user.getAge());
+        resUserDTO.setRefreshToken(user.getRefreshToken());
+        resUserDTO.setActive(user.isActive());
+        resUserDTO.setAvatar(user.getAvatar());
+        resUserDTO.setGender(user.getGender());
+        resUserDTO.setCreatedAt(user.getCreatedAt());
+        resUserDTO.setUpdatedAt(user.getUpdatedAt());
+
+        return resUserDTO;
     }
 }
