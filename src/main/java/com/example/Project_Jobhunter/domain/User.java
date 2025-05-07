@@ -21,6 +21,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,11 +38,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @NotBlank(message = "Name is not empty!")
     private String name;
 
+    @Email(message = "Email is not in correct format!")
+    @NotBlank(message = "Email is not empty!")
     private String email;
 
+    @NotBlank(message = "Password is not empty!")
     private String password;
+
     private String address;
     private int age;
     private String avatar;

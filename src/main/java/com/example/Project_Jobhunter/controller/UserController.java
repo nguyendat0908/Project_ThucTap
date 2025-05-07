@@ -9,6 +9,8 @@ import com.example.Project_Jobhunter.service.UserService;
 import com.example.Project_Jobhunter.util.annotation.ApiMessage;
 import com.example.Project_Jobhunter.util.exception.IdInvalidException;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +35,7 @@ public class UserController {
     // Create a new user
     @PostMapping("/users")
     @ApiMessage("Create a new user")
-    public ResponseEntity<ResUserDTO> createUser(@RequestBody User user) throws IdInvalidException {
+    public ResponseEntity<ResUserDTO> createUser(@RequestBody @Valid User user) throws IdInvalidException {
 
         boolean isEmailExists = this.userService.handleCheckExistByEmail(user.getEmail());
         if (isEmailExists) {
@@ -67,7 +69,7 @@ public class UserController {
     // Update a user
     @PutMapping("/users")
     @ApiMessage("Update a user")
-    public ResponseEntity<ResUserDTO> updateUser(@RequestBody User user) throws IdInvalidException {
+    public ResponseEntity<ResUserDTO> updateUser(@RequestBody @Valid User user) throws IdInvalidException {
         User newUser = this.userService.handleUpdateUser(user);
         if (newUser == null) {
             throw new IdInvalidException("ID no exist! Please check your ID.");
