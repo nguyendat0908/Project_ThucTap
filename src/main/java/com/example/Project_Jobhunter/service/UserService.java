@@ -3,10 +3,15 @@ package com.example.Project_Jobhunter.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.Project_Jobhunter.domain.User;
+import com.example.Project_Jobhunter.dto.response.ResPaginationDTO;
 import com.example.Project_Jobhunter.dto.response.ResUserDTO;
 import com.example.Project_Jobhunter.repository.UserRepository;
 
@@ -34,8 +39,25 @@ public class UserService {
     }
 
     // Get list users
-    public List<User> handleGetUsers() {
-        return this.userRepository.findAll();
+    public ResPaginationDTO handleGetUsers(Specification<User> spec, Pageable pageable) {
+
+        Page<User> pageUser = this.userRepository.findAll(spec, pageable);
+        ResPaginationDTO resPaginationDTO = new ResPaginationDTO();
+        ResPaginationDTO.Meta meta = new ResPaginationDTO.Meta();
+
+        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setPageSize(pageable.getPageSize());
+        meta.setPages(pageUser.getTotalPages());
+        meta.setTotal(pageUser.getTotalElements());
+
+        resPaginationDTO.setMeta(meta);
+
+        List<ResUserDTO> listUserDTOs = pageUser.getContent().stream().map(item -> this.convertToResUserDTO(item))
+                .collect(Collectors.toList());
+
+        resPaginationDTO.setResult(listUserDTOs);
+
+        return resPaginationDTO;
     }
 
     // Update a user

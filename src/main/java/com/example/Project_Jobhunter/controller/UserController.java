@@ -4,16 +4,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Project_Jobhunter.domain.User;
+import com.example.Project_Jobhunter.dto.response.ResPaginationDTO;
 import com.example.Project_Jobhunter.dto.response.ResUserDTO;
 import com.example.Project_Jobhunter.service.UserService;
 import com.example.Project_Jobhunter.util.annotation.ApiMessage;
 import com.example.Project_Jobhunter.util.exception.IdInvalidException;
+import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,10 +70,8 @@ public class UserController {
     // Get list users
     @GetMapping("/users")
     @ApiMessage("Get list users")
-    public ResponseEntity<List<ResUserDTO>> getListUsers() {
-        List<User> users = this.userService.handleGetUsers();
-        List<ResUserDTO> resUserDTOs = users.stream().map(user -> this.userService.convertToResUserDTO(user)).toList();
-        return ResponseEntity.ok(resUserDTOs);
+    public ResponseEntity<ResPaginationDTO> getListUsers(@Filter Specification<User> spec, Pageable pageable) {
+        return ResponseEntity.ok(this.userService.handleGetUsers(spec, pageable));
     }
 
     // Update a user
