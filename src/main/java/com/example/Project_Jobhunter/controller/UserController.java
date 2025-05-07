@@ -7,6 +7,7 @@ import com.example.Project_Jobhunter.domain.User;
 import com.example.Project_Jobhunter.dto.response.ResUserDTO;
 import com.example.Project_Jobhunter.service.UserService;
 import com.example.Project_Jobhunter.util.annotation.ApiMessage;
+import com.example.Project_Jobhunter.util.exception.IdInvalidException;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,13 @@ public class UserController {
     // Create a new user
     @PostMapping("/users")
     @ApiMessage("Create a new user")
-    public ResponseEntity<ResUserDTO> createUser(@RequestBody User user) {
+    public ResponseEntity<ResUserDTO> createUser(@RequestBody User user) throws IdInvalidException {
+
+        boolean isEmailExists = this.userService.handleCheckExistByEmail(user.getEmail());
+        if (isEmailExists) {
+            throw new IdInvalidException("Email existed! Please chose another email.");
+        }
+
         User newUser = this.userService.handleCreateUser(user);
         return ResponseEntity.ok(this.userService.convertToResUserDTO(newUser));
     }
@@ -40,8 +47,11 @@ public class UserController {
     // Get a user by ID
     @GetMapping("/users/{id}")
     @ApiMessage("Get user by ID")
-    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") UUID id) {
+    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") UUID id) throws IdInvalidException {
         User user = this.userService.handleGetUserById(id);
+        if (user == null) {
+            throw new IdInvalidException("ID no exist! Please check your ID.");
+        }
         return ResponseEntity.ok(this.userService.convertToResUserDTO(user));
     }
 
@@ -57,15 +67,22 @@ public class UserController {
     // Update a user
     @PutMapping("/users")
     @ApiMessage("Update a user")
-    public ResponseEntity<ResUserDTO> updateUser(@RequestBody User user) {
-        User updatedUser = this.userService.handleUpdateUser(user);
-        return ResponseEntity.ok(this.userService.convertToResUserDTO(updatedUser));
+    public ResponseEntity<ResUserDTO> updateUser(@RequestBody User user) throws IdInvalidException {
+        User newUser = this.userService.handleUpdateUser(user);
+        if (newUser == null) {
+            throw new IdInvalidException("ID no exist! Please check your ID.");
+        }
+        return ResponseEntity.ok(this.userService.convertToResUserDTO(newUser));
     }
 
     // Delete a user
     @DeleteMapping("/users/{id}")
     @ApiMessage("Delete a user")
-    public ResponseEntity<Void> deleteUserById(@PathVariable("id") UUID id) {
+    public ResponseEntity<Void> deleteUserById(@PathVariable("id") UUID id) throws IdInvalidException {
+        User user = this.userService.handleGetUserById(id);
+        if (user == null) {
+            throw new IdInvalidException("ID no exist! Please check your ID.");
+        }
         this.userService.handleDeleteUserById(id);
         return ResponseEntity.ok(null);
     }

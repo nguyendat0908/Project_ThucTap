@@ -10,4 +10,6 @@ import com.example.Project_Jobhunter.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
+    boolean existsByEmail(String email);
+
 }

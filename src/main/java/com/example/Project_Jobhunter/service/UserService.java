@@ -42,12 +42,12 @@ public class UserService {
     public User handleUpdateUser(User user) {
         User currentUser = this.handleGetUserById(user.getId());
         if (currentUser != null) {
-            currentUser.setName(user.getName());
-            currentUser.setAddress(user.getAddress());
-            currentUser.setAge(user.getAge());
-            currentUser.setGender(user.getGender());
-            currentUser.setAvatar(user.getAvatar());
-            currentUser.setActive(user.isActive());
+            currentUser.setName(user.getName() != null ? user.getName() : currentUser.getName());
+            currentUser.setAddress(user.getAddress() != null ? user.getAddress() : currentUser.getAddress());
+            currentUser.setAge(user.getAge() != 0 ? user.getAge() : currentUser.getAge());
+            currentUser.setGender(user.getGender() != null ? user.getGender() : currentUser.getGender());
+            currentUser.setAvatar(user.getAvatar() != null ? user.getAvatar() : currentUser.getAvatar());
+            currentUser.setActive(user.isActive() != false ? user.isActive() : currentUser.isActive());
 
             this.userRepository.save(currentUser);
         }
@@ -76,5 +76,10 @@ public class UserService {
         resUserDTO.setUpdatedAt(user.getUpdatedAt());
 
         return resUserDTO;
+    }
+
+    // Check if email exists
+    public boolean handleCheckExistByEmail(String email) {
+        return this.userRepository.existsByEmail(email);
     }
 }
