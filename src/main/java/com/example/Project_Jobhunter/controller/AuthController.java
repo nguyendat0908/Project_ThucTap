@@ -42,15 +42,15 @@ public class AuthController {
         Authentication authentication = authenticationManagerBuilder.getObject()
                 .authenticate(usernamePasswordAuthenticationToken);
 
-        // Set thông tin người dùng vào context của Security
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         ResLoginDTO resLoginDTO = new ResLoginDTO();
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
 
         // Tạo token
         String accessToken = this.securityUtil.createAccessToken(authentication.getName(), resLoginDTO);
         resLoginDTO.setAccessToken(accessToken);
+
+        // Set thông tin người dùng vào context của Security
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return ResponseEntity.ok(resLoginDTO);
     }
