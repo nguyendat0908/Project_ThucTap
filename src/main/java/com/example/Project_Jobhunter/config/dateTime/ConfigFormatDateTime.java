@@ -22,7 +22,7 @@ public class ConfigFormatDateTime implements WebMvcConfigurer {
                 .withZone(ZoneId.of("Asia/Ho_Chi_Minh"));
 
         registrar.setDateTimeFormatter(dateTimeFormatter); // Áp dụng cho LocalDateTime
-        registrar.setDateFormatter(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        registrar.setDateFormatter(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         registrar.setTimeFormatter(DateTimeFormatter.ofPattern("HH:mm"));
 
         registrar.registerFormatters(registry);

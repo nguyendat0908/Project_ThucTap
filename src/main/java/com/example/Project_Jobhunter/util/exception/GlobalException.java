@@ -20,7 +20,7 @@ import com.example.Project_Jobhunter.dto.response.ResponseDTO;
 public class GlobalException {
 
     @ExceptionHandler(value = { IdInvalidException.class, BadCredentialsException.class,
-            UsernameNotFoundException.class })
+            UsernameNotFoundException.class, IllegalArgumentException.class })
     public ResponseEntity<ResponseDTO<Object>> handleIdException(Exception ex) {
         ResponseDTO<Object> res = new ResponseDTO<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -56,4 +56,6 @@ public class GlobalException {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
+
+    
 }

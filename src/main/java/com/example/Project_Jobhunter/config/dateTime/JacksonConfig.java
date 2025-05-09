@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class JacksonConfig {
@@ -20,6 +22,10 @@ public class JacksonConfig {
 
         // Thêm module vào ObjectMapper
         objectMapper.registerModule(module);
+        objectMapper.registerModule(new JavaTimeModule());
+
+        // Tránh serialize LocalDate thành timestamp (số milliseconds)
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         return objectMapper;
     }

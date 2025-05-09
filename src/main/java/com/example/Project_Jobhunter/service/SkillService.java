@@ -75,4 +75,9 @@ public class SkillService {
     public boolean handleCheckSkillExistsByName(String name) {
         return this.skillRepository.existsByName(name);
     }
+
+    // Check exist id
+    public boolean handleCheckExistById(UUID id) {
+        return this.skillRepository.existsById(id);
+    }
 }

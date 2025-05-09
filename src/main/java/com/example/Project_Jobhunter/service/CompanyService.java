@@ -83,4 +83,8 @@ public class CompanyService {
         return this.companyRepository.existsByName(name);
     }
 
+    public boolean handleCheckExistById(UUID id) {
+        return this.companyRepository.existsById(id);
+    }
+
 }

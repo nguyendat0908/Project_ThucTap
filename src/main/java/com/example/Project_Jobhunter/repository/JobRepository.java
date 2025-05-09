@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import com.example.Project_Jobhunter.domain.Skill;
+import com.example.Project_Jobhunter.domain.Job;
 
 @Repository
-public interface SkillRepository extends JpaRepository<Skill, UUID>, JpaSpecificationExecutor<Skill> {
+public interface JobRepository extends JpaRepository<Job, UUID>, JpaSpecificationExecutor<Job> {
 
     boolean existsByName(String name);
 
-    List<Skill> findByIdIn(List<UUID> ids);
 }
