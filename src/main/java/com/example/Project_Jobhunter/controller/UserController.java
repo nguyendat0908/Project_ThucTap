@@ -3,9 +3,13 @@ package com.example.Project_Jobhunter.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Project_Jobhunter.domain.Company;
+import com.example.Project_Jobhunter.domain.Role;
 import com.example.Project_Jobhunter.domain.User;
 import com.example.Project_Jobhunter.dto.response.ResPaginationDTO;
 import com.example.Project_Jobhunter.dto.response.ResUserDTO;
+import com.example.Project_Jobhunter.service.CompanyService;
+import com.example.Project_Jobhunter.service.RoleService;
 import com.example.Project_Jobhunter.service.UserService;
 import com.example.Project_Jobhunter.util.annotation.ApiMessage;
 import com.example.Project_Jobhunter.util.exception.IdInvalidException;
@@ -32,10 +36,15 @@ public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final CompanyService companyService;
+    private final RoleService roleService;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, CompanyService companyService,
+            RoleService roleService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.companyService = companyService;
+        this.roleService = roleService;
     }
 
     // Create a new user
@@ -47,6 +56,8 @@ public class UserController {
         if (isEmailExists) {
             throw new IdInvalidException("Email existed! Please chose another email.");
         }
+
+        this.checkCompanyAndRole(user);
 
         // Hash password before saving to database
         String hashedPassword = this.passwordEncoder.encode(user.getPassword());
@@ -77,11 +88,12 @@ public class UserController {
     // Update a user
     @PutMapping("/users")
     @ApiMessage("Update a user")
-    public ResponseEntity<ResUserDTO> updateUser(@RequestBody @Valid User user) throws IdInvalidException {
+    public ResponseEntity<ResUserDTO> updateUser(@RequestBody User user) throws IdInvalidException {
         User newUser = this.userService.handleUpdateUser(user);
         if (newUser == null) {
             throw new IdInvalidException("ID no exist! Please check your ID.");
         }
+        this.checkCompanyAndRole(user);
         return ResponseEntity.ok(this.userService.convertToResUserDTO(newUser));
     }
 
@@ -95,6 +107,21 @@ public class UserController {
         }
         this.userService.handleDeleteUserById(id);
         return ResponseEntity.ok(null);
+    }
+
+    // Check company and role
+    private void checkCompanyAndRole(User user) throws IdInvalidException {
+
+        Company company = this.companyService.handleGetCompanyById(user.getCompany().getId());
+        if (company == null) {
+            throw new IdInvalidException("Company no exist! Please check your ID.");
+        }
+
+        Role role = this.roleService.handleGetRoleById(user.getRole().getId());
+        if (role == null) {
+            throw new IdInvalidException("Role no exist! Please check your ID.");
+        }
+
     }
 
 }

@@ -27,4 +27,25 @@ public class ResUserDTO {
     private GenderEnum gender;
     private Instant createdAt;
     private Instant updatedAt;
+
+    private CompanyUser companyUser;
+    private RoleUser roleUser;
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CompanyUser {
+        private UUID id;
+        private String name;
+    }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RoleUser {
+        private UUID id;
+        private String name;
+    }
 }

@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.example.Project_Jobhunter.domain.Company;
+import com.example.Project_Jobhunter.domain.Role;
 import com.example.Project_Jobhunter.domain.User;
 import com.example.Project_Jobhunter.dto.response.ResPaginationDTO;
 import com.example.Project_Jobhunter.dto.response.ResUserDTO;
@@ -19,13 +21,38 @@ import com.example.Project_Jobhunter.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CompanyService companyService;
+    private final RoleService roleService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, CompanyService companyService, RoleService roleService) {
         this.userRepository = userRepository;
+        this.companyService = companyService;
+        this.roleService = roleService;
     }
 
     // Create a new user
     public User handleCreateUser(User user) {
+
+        // Check company
+        if (user.getCompany() != null) {
+            Company company = this.companyService.handleGetCompanyById(user.getCompany().getId());
+            if (company != null) {
+                user.setCompany(company);
+            } else {
+                user.setCompany(null);
+            }
+
+        }
+
+        // Check role
+        if (user.getRole() != null) {
+            Role role = this.roleService.handleGetRoleById(user.getRole().getId());
+            if (role != null) {
+                user.setRole(role);
+            } else {
+                user.setRole(null);
+            }
+        }
         return this.userRepository.save(user);
     }
 
@@ -71,6 +98,19 @@ public class UserService {
             currentUser.setAvatar(user.getAvatar() != null ? user.getAvatar() : currentUser.getAvatar());
             currentUser.setActive(user.isActive() != false ? user.isActive() : currentUser.isActive());
 
+            // Check company
+            if (user.getCompany() != null) {
+                Company company = this.companyService.handleGetCompanyById(user.getCompany().getId());
+                user.setCompany(company);
+                currentUser.setCompany(user.getCompany());
+            }
+            // Check role
+            if (user.getRole() != null) {
+                Role role = this.roleService.handleGetRoleById(user.getRole().getId());
+                user.setRole(role);
+                currentUser.setRole(user.getRole());
+            }
+
             this.userRepository.save(currentUser);
         }
         return currentUser;
@@ -84,6 +124,18 @@ public class UserService {
     // Convert User to ResUserDTO
     public ResUserDTO convertToResUserDTO(User user) {
         ResUserDTO resUserDTO = new ResUserDTO();
+        ResUserDTO.CompanyUser companyUser = new ResUserDTO.CompanyUser();
+        ResUserDTO.RoleUser roleUser = new ResUserDTO.RoleUser();
+        if (user.getCompany() != null) {
+            companyUser.setId(user.getCompany().getId());
+            companyUser.setName(user.getCompany().getName());
+            resUserDTO.setCompanyUser(companyUser);
+        }
+        if (user.getRole() != null) {
+            roleUser.setId(user.getRole().getId());
+            roleUser.setName(user.getRole().getName());
+            resUserDTO.setRoleUser(roleUser);
+        }
 
         resUserDTO.setId(user.getId());
         resUserDTO.setName(user.getName());

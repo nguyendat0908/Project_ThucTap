@@ -13,6 +13,8 @@ import com.example.Project_Jobhunter.util.annotation.ApiMessage;
 import com.example.Project_Jobhunter.util.exception.IdInvalidException;
 import com.turkraft.springfilter.boot.Filter;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,7 +44,7 @@ public class RoleController {
     // Create a new role
     @PostMapping("/roles")
     @ApiMessage("Create a new role")
-    public ResponseEntity<ResRoleDTO> createRole(@RequestBody Role role) throws IdInvalidException {
+    public ResponseEntity<ResRoleDTO> createRole(@RequestBody @Valid Role role) throws IdInvalidException {
 
         boolean isCheckExistRoleName = this.roleService.handleRoleExistsByName(role.getName());
         if (isCheckExistRoleName) {
@@ -84,7 +86,7 @@ public class RoleController {
     // Update a role
     @PutMapping("/roles")
     @ApiMessage("Update role")
-    public ResponseEntity<ResRoleDTO> updateRole(@RequestBody Role role) throws IdInvalidException {
+    public ResponseEntity<ResRoleDTO> updateRole(@RequestBody @Valid Role role) throws IdInvalidException {
 
         Role newRole = this.roleService.handleGetRoleById(role.getId());
         if (newRole == null) {
