@@ -68,6 +68,7 @@ public class PermissionController {
 
     // Update a permission
     @PutMapping("/permissions")
+    @ApiMessage("Update permission")
     public ResponseEntity<Permission> updatePermission(@RequestBody @Valid Permission permission)
             throws IdInvalidException {
 

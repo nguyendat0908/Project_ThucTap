@@ -80,4 +80,9 @@ public class PermissionService {
     public boolean checkExistPermissionName(String name) {
         return this.permissionRepository.existsByName(name);
     }
+
+    // Check if permission exists by ID
+    public boolean checkExistPermissionById(UUID id) {
+        return this.permissionRepository.existsById(id);
+    }
 }
