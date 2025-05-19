@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,9 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @NotBlank(message = "Name is not empty!")
     private String name;
+
     private String apiPath;
     private String method;
     private String module;

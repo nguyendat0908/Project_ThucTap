@@ -26,6 +26,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,7 +42,10 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @NotBlank(message = "Name is not empty!")
     private String name;
+
+    @NotBlank(message = "Location is not empty!")
     private String location;
 
     private double salary;

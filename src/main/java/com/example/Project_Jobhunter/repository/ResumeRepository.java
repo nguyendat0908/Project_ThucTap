@@ -6,11 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import com.example.Project_Jobhunter.domain.Job;
+import com.example.Project_Jobhunter.domain.Resume;
 
 @Repository
-public interface JobRepository extends JpaRepository<Job, UUID>, JpaSpecificationExecutor<Job> {
-
-    boolean existsByName(String name);
+public interface ResumeRepository extends JpaRepository<Resume, UUID>, JpaSpecificationExecutor<Resume> {
 
 }
