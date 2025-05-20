@@ -29,6 +29,7 @@ public class ResLoginDTO {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RoleUserLogin {
