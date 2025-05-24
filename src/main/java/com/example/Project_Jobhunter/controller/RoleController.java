@@ -43,12 +43,12 @@ public class RoleController {
 
     // Create a new role
     @PostMapping("/roles")
-    @ApiMessage("Create a new role")
+    @ApiMessage("Tạo một vai trò mới thành công!")
     public ResponseEntity<ResRoleDTO> createRole(@RequestBody @Valid Role role) throws IdInvalidException {
 
         boolean isCheckExistRoleName = this.roleService.handleRoleExistsByName(role.getName());
         if (isCheckExistRoleName) {
-            throw new IdInvalidException("Role name already exists! Please choose another name.");
+            throw new IdInvalidException("Tên vai trò đã tồn tại! Vui lòng chọn tên khác.");
         }
         if (role.getPermissions() != null) {
             List<UUID> listIdPermissions = role.getPermissions().stream().map(Permission::getId)
@@ -56,7 +56,7 @@ public class RoleController {
             for (UUID id : listIdPermissions) {
                 boolean isCheckPermissionExist = this.permissionService.checkExistPermissionById(id);
                 if (!isCheckPermissionExist) {
-                    throw new IdInvalidException("Permission not exist. Please check your permission!");
+                    throw new IdInvalidException("Quyền hạn không tồn tại. Vui lòng kiểm tra lại quyền hạn của bạn!");
                 }
             }
         }
@@ -67,35 +67,35 @@ public class RoleController {
 
     // Get role by ID
     @GetMapping("/roles/{id}")
-    @ApiMessage("Get role by ID")
+    @ApiMessage("Hiển thị thông tin chi tiết một vai trò thành công!")
     public ResponseEntity<ResRoleDTO> getRoleById(@PathVariable("id") UUID id) throws IdInvalidException {
         Role role = this.roleService.handleGetRoleById(id);
         if (role == null) {
-            throw new IdInvalidException("Role not found! Please check the ID again.");
+            throw new IdInvalidException("Vai trò không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         return ResponseEntity.ok(this.roleService.convertToResRoleDTO(role));
     }
 
     // Get all roles
     @GetMapping("/roles")
-    @ApiMessage("Get list roles")
+    @ApiMessage("Hiển thị danh sách các vai trò thành công!")
     public ResponseEntity<ResPaginationDTO> getListRoles(@Filter Specification<Role> spec, Pageable pageable) {
         return ResponseEntity.ok(this.roleService.handleGetAllRoles(spec, pageable));
     }
 
     // Update a role
     @PutMapping("/roles")
-    @ApiMessage("Update role")
+    @ApiMessage("Cập nhật thông tin vai trò thành công!")
     public ResponseEntity<ResRoleDTO> updateRole(@RequestBody @Valid Role role) throws IdInvalidException {
 
         Role newRole = this.roleService.handleGetRoleById(role.getId());
         if (newRole == null) {
-            throw new IdInvalidException("Role no exist! Please check your role ID.");
+            throw new IdInvalidException("Vai trò không tồn tại! Vui lòng kiểm tra lại ID.");
         }
 
         boolean isCheckExistRoleName = this.roleService.handleRoleExistsByName(role.getName());
         if (isCheckExistRoleName) {
-            throw new IdInvalidException("Role name already exists! Please choose another name.");
+            throw new IdInvalidException("Tên vai trò đã tồn tại! Vui lòng chọn tên khác.");
         }
         if (role.getPermissions() != null) {
             List<UUID> listIdPermissions = role.getPermissions().stream().map(Permission::getId)
@@ -103,7 +103,7 @@ public class RoleController {
             for (UUID id : listIdPermissions) {
                 boolean isCheckPermissionExist = this.permissionService.checkExistPermissionById(id);
                 if (!isCheckPermissionExist) {
-                    throw new IdInvalidException("Permission not exist. Please check your permission!");
+                    throw new IdInvalidException("Quyền hạn không tồn tại. Vui lòng kiểm tra lại quyền hạn của bạn!");
                 }
             }
         }
@@ -114,11 +114,11 @@ public class RoleController {
 
     // Delete a role
     @DeleteMapping("/roles/{id}")
-    @ApiMessage("Delete role")
+    @ApiMessage("Xóa vai trò thành công!")
     public ResponseEntity<Void> deleteRole(@PathVariable("id") UUID id) throws IdInvalidException {
         Role role = this.roleService.handleGetRoleById(id);
         if (role == null) {
-            throw new IdInvalidException("Role not found! Please check the ID again.");
+            throw new IdInvalidException("Vai trò không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         this.roleService.handleDeleteRole(id);
         return ResponseEntity.ok().build();

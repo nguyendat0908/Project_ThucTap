@@ -52,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    @ApiMessage("Login success!")
+    @ApiMessage("Đăng nhập thành công!")
     public ResponseEntity<ResLoginDTO> login(@RequestBody @Valid LoginDTO loginDTO) {
 
         // Chứa thông tin người dùng chưa xác thực
@@ -116,7 +116,7 @@ public class AuthController {
 
     // Get account when f5 website
     @GetMapping("/auth/account")
-    @ApiMessage("Get account when f5 website")
+    @ApiMessage("Lấy thông tin tài khoản người dùng hiện tại thành công!")
     public ResponseEntity<ResLoginDTO.UserLogin> getAccount() {
         String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
 
@@ -146,7 +146,7 @@ public class AuthController {
     }
 
     @GetMapping("/auth/refresh")
-    @ApiMessage("Get user by refresh token")
+    @ApiMessage("Lấy lại access token thành công!")
     public ResponseEntity<ResLoginDTO> getRefreshToken(
             @CookieValue(name = "refresh_token", defaultValue = "No refresh_token") String refreshToken)
             throws IdInvalidException {
@@ -209,7 +209,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/logout")
-    @ApiMessage("Logout success!")
+    @ApiMessage("Đăng xuất thành công!")
     public ResponseEntity<ResLoginDTO> logout() throws IdInvalidException {
 
         String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
@@ -228,6 +228,14 @@ public class AuthController {
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
                 .body(null);
+    }
+
+    @PostMapping("/auth/register")
+    @ApiMessage("")
+    public String postMethodName(@RequestBody String entity) {
+        // TODO: process POST request
+
+        return entity;
     }
 
 }

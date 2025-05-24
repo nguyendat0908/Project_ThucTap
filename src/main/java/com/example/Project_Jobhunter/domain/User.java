@@ -38,14 +38,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Name is not empty!")
+    @NotBlank(message = "Tên không được để trống!")
     private String name;
 
-    @Email(message = "Email is not in correct format!")
-    @NotBlank(message = "Email is not empty!")
+    @Email(message = "Email không đúng định dạng!")
+    @NotBlank(message = "Email không được để trống!")
     private String email;
 
-    @NotBlank(message = "Password is not empty!")
+    @NotBlank(message = "Mật khẩu không được để trống!")
     private String password;
 
     private String address;

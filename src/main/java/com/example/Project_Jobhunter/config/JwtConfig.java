@@ -51,7 +51,7 @@ public class JwtConfig {
             try {
                 return jwtDecoder.decode(token);
             } catch (Exception e) {
-                System.out.println(">>> JWT error: " + e.getMessage());
+                System.out.println(">>> JWT lỗi: " + e.getMessage());
                 throw e;
             }
         };

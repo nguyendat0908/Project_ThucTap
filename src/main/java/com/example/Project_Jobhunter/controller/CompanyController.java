@@ -36,55 +36,55 @@ public class CompanyController {
 
     // Crete a new company
     @PostMapping("/companies")
-    @ApiMessage("Create a new company")
+    @ApiMessage("Tạo công ty mới thành công!")
     public ResponseEntity<Company> createCompany(@RequestBody @Valid Company company) throws IdInvalidException {
         boolean isCheckExistCompanyName = this.companyService.handleCheckCompanyByName(company.getName());
         if (isCheckExistCompanyName) {
-            throw new IdInvalidException("Company name already exists! Please chose another name.");
+            throw new IdInvalidException("Tên công ty đã tồn tại! Vui lòng chọn tên khác.");
         }
         return ResponseEntity.ok(this.companyService.handleCreateCompany(company));
     }
 
     // Get a company by ID
     @GetMapping("/companies/{id}")
-    @ApiMessage("Get a company by ID")
+    @ApiMessage("Hiển thị thông tin chi tiết một công ty thành công!")
     public ResponseEntity<Company> getCompanyById(@PathVariable("id") UUID id) throws IdInvalidException {
         Company company = this.companyService.handleGetCompanyById(id);
         if (company == null) {
-            throw new IdInvalidException("Company not found! Please check the ID again.");
+            throw new IdInvalidException("Không tìm thấy công ty! Vui lòng kiểm tra lại ID.");
         }
         return ResponseEntity.ok(company);
     }
 
     // Get all companies
     @GetMapping("/companies")
-    @ApiMessage("Get list companies")
+    @ApiMessage("Hiển thị danh sách công ty thành công!")
     public ResponseEntity<ResPaginationDTO> getListCompanies(@Filter Specification<Company> spec, Pageable pageable) {
         return ResponseEntity.ok(this.companyService.handleGetAllCompanies(spec, pageable));
     }
 
     // Update a company
     @PutMapping("/companies")
-    @ApiMessage("Update a company")
+    @ApiMessage("Cập nhật thông tin công ty thành công!")
     public ResponseEntity<Company> updateCompany(@RequestBody @Valid Company company) throws IdInvalidException {
         boolean isCheckExistCompanyName = this.companyService.handleCheckCompanyByName(company.getName());
         if (isCheckExistCompanyName) {
-            throw new IdInvalidException("Company name already exists! Please chose another name.");
+            throw new IdInvalidException("Tên công ty đã tồn tại! Vui lòng chọn tên khác.");
         }
         Company newCompany = this.companyService.handleUpdateCompany(company);
         if (newCompany == null) {
-            throw new IdInvalidException("Company not found! Please check the ID again.");
+            throw new IdInvalidException("Công ty không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         return ResponseEntity.ok(newCompany);
     }
 
     // Delete a company
     @DeleteMapping("/companies/{id}")
-    @ApiMessage("Delete a company")
+    @ApiMessage("Xóa công ty thành công!")
     public ResponseEntity<Void> deleteCompany(@PathVariable("id") UUID id) throws IdInvalidException {
         Company company = this.companyService.handleGetCompanyById(id);
         if (company == null) {
-            throw new IdInvalidException("Company not found! Please check the ID again.");
+            throw new IdInvalidException("Công ty không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         this.companyService.handleDeleteCompany(id);
         return ResponseEntity.ok().build();

@@ -33,7 +33,7 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Name is not empty!")
+    @NotBlank(message = "Tên không được để trống!")
     private String name;
 
     private Instant createdAt;

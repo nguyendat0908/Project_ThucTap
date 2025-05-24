@@ -36,23 +36,23 @@ public class PermissionController {
 
     // Create a new permission
     @PostMapping("/permissions")
-    @ApiMessage("Create a new permission")
+    @ApiMessage("Tạo một quyền hạn mới thành công!")
     public ResponseEntity<Permission> createPermission(@RequestBody @Valid Permission permission)
             throws IdInvalidException {
         boolean isCheckExistPermissionName = this.permissionService.checkExistPermissionName(permission.getName());
         if (isCheckExistPermissionName) {
-            throw new IdInvalidException("Permission name already exists! Please choose another name.");
+            throw new IdInvalidException("Tên quyền hạn đã tồn tại! Vui lòng chọn tên khác.");
         }
         return ResponseEntity.ok(this.permissionService.handleCreatePermission(permission));
     }
 
     // Get permission by ID
     @GetMapping("/permissions/{id}")
-    @ApiMessage("Get permission by ID")
+    @ApiMessage("Hiển thi thị thông tin chi tiết một quyền hạn thành công!")
     public ResponseEntity<Permission> getPermissionById(@PathVariable("id") UUID id) throws IdInvalidException {
         Permission permission = this.permissionService.handleGetPermissionById(id);
         if (permission == null) {
-            throw new IdInvalidException("Permission not found! Please check the ID again.");
+            throw new IdInvalidException("Quyền hạn không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         return ResponseEntity.ok(permission);
 
@@ -60,7 +60,7 @@ public class PermissionController {
 
     // Get all permissions
     @GetMapping("/permissions")
-    @ApiMessage("Get list permissions")
+    @ApiMessage("Hiển thị danh sách quyền hạn thành công!")
     public ResponseEntity<ResPaginationDTO> getListPermissions(@Filter Specification<Permission> spec,
             Pageable pageable) {
         return ResponseEntity.ok(this.permissionService.handleGetAllPermission(spec, pageable));
@@ -68,17 +68,17 @@ public class PermissionController {
 
     // Update a permission
     @PutMapping("/permissions")
-    @ApiMessage("Update permission")
+    @ApiMessage("Cập nhật thông tin quyền hạn thành công!")
     public ResponseEntity<Permission> updatePermission(@RequestBody @Valid Permission permission)
             throws IdInvalidException {
 
         boolean isCheckExistPermissionName = this.permissionService.checkExistPermissionName(permission.getName());
         if (isCheckExistPermissionName) {
-            throw new IdInvalidException("Permission name already exists! Please choose another name.");
+            throw new IdInvalidException("Tên quyền hạn đã tồn tại! Vui lòng chọn tên khác.");
         }
         Permission newPermission = this.permissionService.handleUpdatePermission(permission);
         if (newPermission == null) {
-            throw new IdInvalidException("Permission not found! Please check the ID again.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
         }
 
         return ResponseEntity.ok(newPermission);
@@ -86,11 +86,11 @@ public class PermissionController {
 
     // Delete a permission
     @DeleteMapping("/permissions/{id}")
-    @ApiMessage("Delete permission")
+    @ApiMessage("Xoá quyền hạn thành công!")
     public ResponseEntity<Void> deletePermission(@PathVariable("id") UUID id) throws IdInvalidException {
         Permission permission = this.permissionService.handleGetPermissionById(id);
         if (permission == null) {
-            throw new IdInvalidException("Permission not found! Please check the ID again.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
         }
         this.permissionService.handleDeletePermission(id);
         return ResponseEntity.ok().build();
