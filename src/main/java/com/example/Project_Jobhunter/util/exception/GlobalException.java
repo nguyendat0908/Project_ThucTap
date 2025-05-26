@@ -19,14 +19,23 @@ import com.example.Project_Jobhunter.dto.response.ResponseDTO;
 @ControllerAdvice
 public class GlobalException {
 
-    @ExceptionHandler(value = { IdInvalidException.class, BadCredentialsException.class,
+    @ExceptionHandler(value = { IdInvalidException.class,
             UsernameNotFoundException.class, IllegalArgumentException.class })
     public ResponseEntity<ResponseDTO<Object>> handleIdException(Exception ex) {
         ResponseDTO<Object> res = new ResponseDTO<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
         res.setError(ex.getMessage());
-        res.setMessage("Exception occurs...");
+        res.setMessage("Xảy ra ngoại lệ...");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ResponseDTO<Object>> handleBadCredentials(BadCredentialsException ex) {
+        ResponseDTO<Object> res = new ResponseDTO<Object>();
+        res.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Tên người dùng hoặc mật khẩu không đúng!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
 
     // Handle 404 exception
@@ -37,7 +46,7 @@ public class GlobalException {
         ResponseDTO<Object> res = new ResponseDTO<Object>();
         res.setStatusCode(HttpStatus.NOT_FOUND.value());
         res.setError(ex.getMessage());
-        res.setMessage("404 Not Found. URL may not exist...");
+        res.setMessage("404 không tìm thấy. URL có thể không tồn tại...");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
@@ -57,5 +66,4 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
-    
 }

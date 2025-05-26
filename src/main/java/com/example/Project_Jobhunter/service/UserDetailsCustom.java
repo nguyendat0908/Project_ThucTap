@@ -25,7 +25,7 @@ public class UserDetailsCustom implements UserDetailsService {
         // Tìm user dựa theo username
         User user = this.userService.handleGetUserByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Username/password is not valid!");
+            throw new UsernameNotFoundException("Username/password không đúng. Vui lòng kiểm tra lại!");
         }
 
         return new org.springframework.security.core.userdetails.User(

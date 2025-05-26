@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -43,16 +42,16 @@ public class ResumeController {
     }
 
     @PostMapping("/resumes")
-    @ApiMessage("Create a new resume")
+    @ApiMessage("Tạo một bản sơ yếu lý lịch mới thành công!")
     public ResponseEntity<ResResumeDTO> createResume(@RequestBody Resume resume) throws IdInvalidException {
         User user = this.userService.handleGetUserById(resume.getUser().getId());
         if (user == null) {
-            throw new IdInvalidException("User not found! Please check the ID again.");
+            throw new IdInvalidException("Người dùng không tồn tại! Vui lòng kiểm tra lại ID.");
 
         }
         Job job = this.jobService.handleGetJobById(resume.getJob().getId());
         if (job == null) {
-            throw new IdInvalidException("Job not found! Please check the ID again.");
+            throw new IdInvalidException("Công việc không tồn tại! Vui lòng kiểm tra lại ID.");
         }
 
         Resume newResume = this.resumeService.handleCreateResume(resume);
@@ -60,47 +59,47 @@ public class ResumeController {
     }
 
     @GetMapping("/resumes/{id}")
-    @ApiMessage("Get a resume by ID")
+    @ApiMessage("Hiển thị thông tin chi tiết một bản sơ yếu lý lịch thành công!")
     public ResponseEntity<ResResumeDTO> getResumeById(@PathVariable("id") UUID id) throws IdInvalidException {
         Resume resume = this.resumeService.handleGetResumeById(id);
         if (resume == null) {
-            throw new IdInvalidException("Resume not found! Please check the ID again.");
+            throw new IdInvalidException("Bản sơ yếu lý lịch không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         return ResponseEntity.ok(this.resumeService.convertToResumeDTO(resume));
     }
 
     @GetMapping("/resumes")
-    @ApiMessage("Get list resumes")
+    @ApiMessage("Hiển thị danh sách các bản sơ yếu lý lịch thành công!")
     public ResponseEntity<ResPaginationDTO> getListResumes(@Filter Specification<Resume> spec, Pageable pageable) {
         return ResponseEntity.ok(this.resumeService.handleGetAllResumes(spec, pageable));
     }
 
     @PutMapping("/resumes")
-    @ApiMessage("Update a resume")
+    @ApiMessage("Câp nhật thông tin bản sơ yếu lý lịch thành công!")
     public ResponseEntity<ResResumeDTO> updateResume(@RequestBody Resume resume) throws IdInvalidException {
 
         User user = this.userService.handleGetUserById(resume.getUser().getId());
         if (user == null) {
-            throw new IdInvalidException("User not found! Please check the ID again.");
+            throw new IdInvalidException("Người dùng không tồn tại! Vui lòng kiểm tra lại ID.");
 
         }
         Job job = this.jobService.handleGetJobById(resume.getJob().getId());
         if (job == null) {
-            throw new IdInvalidException("Job not found! Please check the ID again.");
+            throw new IdInvalidException("Công việc không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         Resume newResume = this.resumeService.handleUpdateResume(resume);
         if (newResume == null) {
-            throw new IdInvalidException("Resume not found! Please check the ID again.");
+            throw new IdInvalidException("Bản sơ yếu lý lịch không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         return ResponseEntity.ok(this.resumeService.convertToResumeDTO(newResume));
     }
 
     @DeleteMapping("/resumes/{id}")
-    @ApiMessage("Delete a resume by ID")
+    @ApiMessage("Xóa bản sơ yếu lý lịch thành công!")
     public ResponseEntity<Void> deleteResume(@PathVariable("id") UUID id) throws IdInvalidException {
         Resume resume = this.resumeService.handleGetResumeById(id);
         if (resume == null) {
-            throw new IdInvalidException("Resume not found! Please check the ID again.");
+            throw new IdInvalidException("Bản sơ yếu lý lịch không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         this.resumeService.handleDeleteResume(id);
         return ResponseEntity.ok(null);

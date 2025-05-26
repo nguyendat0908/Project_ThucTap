@@ -49,12 +49,12 @@ public class UserController {
 
     // Create a new user
     @PostMapping("/users")
-    @ApiMessage("Create a new user")
+    @ApiMessage("Tao một người dùng mới thành công!")
     public ResponseEntity<ResUserDTO> createUser(@RequestBody @Valid User user) throws IdInvalidException {
 
         boolean isEmailExists = this.userService.handleCheckExistByEmail(user.getEmail());
         if (isEmailExists) {
-            throw new IdInvalidException("Email existed! Please chose another email.");
+            throw new IdInvalidException("Email đã tồn tại! Vui lòng chọn email khác.");
         }
 
         this.checkCompanyAndRole(user);
@@ -69,29 +69,29 @@ public class UserController {
 
     // Get a user by ID
     @GetMapping("/users/{id}")
-    @ApiMessage("Get user by ID")
+    @ApiMessage("Hiển thị thông tin chi tiết một người dùng thành công!")
     public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") UUID id) throws IdInvalidException {
         User user = this.userService.handleGetUserById(id);
         if (user == null) {
-            throw new IdInvalidException("ID no exist! Please check your ID.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         return ResponseEntity.ok(this.userService.convertToResUserDTO(user));
     }
 
     // Get list users
     @GetMapping("/users")
-    @ApiMessage("Get list users")
+    @ApiMessage("Hiển thị danh sách người dùng thành công!")
     public ResponseEntity<ResPaginationDTO> getListUsers(@Filter Specification<User> spec, Pageable pageable) {
         return ResponseEntity.ok(this.userService.handleGetUsers(spec, pageable));
     }
 
     // Update a user
     @PutMapping("/users")
-    @ApiMessage("Update a user")
+    @ApiMessage("Câp nhật thông tin người dùng thành công!")
     public ResponseEntity<ResUserDTO> updateUser(@RequestBody User user) throws IdInvalidException {
         User newUser = this.userService.handleUpdateUser(user);
         if (newUser == null) {
-            throw new IdInvalidException("ID no exist! Please check your ID.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         this.checkCompanyAndRole(user);
         return ResponseEntity.ok(this.userService.convertToResUserDTO(newUser));
@@ -99,11 +99,11 @@ public class UserController {
 
     // Delete a user
     @DeleteMapping("/users/{id}")
-    @ApiMessage("Delete a user")
+    @ApiMessage("Xóa người dùng thành công!")
     public ResponseEntity<Void> deleteUserById(@PathVariable("id") UUID id) throws IdInvalidException {
         User user = this.userService.handleGetUserById(id);
         if (user == null) {
-            throw new IdInvalidException("ID no exist! Please check your ID.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         this.userService.handleDeleteUserById(id);
         return ResponseEntity.ok(null);
@@ -114,12 +114,12 @@ public class UserController {
 
         Company company = this.companyService.handleGetCompanyById(user.getCompany().getId());
         if (company == null) {
-            throw new IdInvalidException("Company no exist! Please check your ID.");
+            throw new IdInvalidException("Công ty không tồn tại! Vui lòng kiểm tra lại ID.");
         }
 
         Role role = this.roleService.handleGetRoleById(user.getRole().getId());
         if (role == null) {
-            throw new IdInvalidException("Role no exist! Please check your ID.");
+            throw new IdInvalidException("Vai trò không tồn tại! Vui lòng kiểm tra lại ID.");
         }
 
     }

@@ -43,13 +43,13 @@ public class JobController {
     }
 
     @PostMapping("/jobs")
-    @ApiMessage("Create a new job")
+    @ApiMessage("Tạo một công việc mới thành công!")
     public ResponseEntity<ResJobDTO> createJob(@RequestBody @Valid Job job)
             throws IdInvalidException, IllegalArgumentException {
         this.checkExist(job);
         if (job.getEndDate() != null && job.getStartDate() != null) {
             if (job.getEndDate().isBefore(job.getStartDate())) {
-                throw new IllegalArgumentException("End date must be after start date!");
+                throw new IllegalArgumentException("Ngày kết thúc phải sau ngày bắt đầu!");
             }
 
         }
@@ -58,44 +58,44 @@ public class JobController {
     }
 
     @GetMapping("/jobs/{id}")
-    @ApiMessage("Get job by id")
+    @ApiMessage("Hiển thị chi tiết thông tin công việc thành công!")
     public ResponseEntity<ResJobDTO> getJobById(@PathVariable("id") UUID id) throws IdInvalidException {
         Job job = this.jobService.handleGetJobById(id);
         if (job == null) {
-            throw new IdInvalidException("ID no exist! Please check your ID.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
         }
         return ResponseEntity.ok(this.jobService.convertToResJobDTO(job));
     }
 
     @GetMapping("/jobs")
-    @ApiMessage("Get list job")
+    @ApiMessage("Hiển thị danh sách công việc thành công!")
     public ResponseEntity<ResPaginationDTO> getListJobs(@Filter Specification<Job> spec, Pageable pageable) {
         return ResponseEntity.ok(this.jobService.handleGetAllJobs(spec, pageable));
     }
 
     @PutMapping("/jobs")
-    @ApiMessage("Update job")
+    @ApiMessage("Cập nhật thông tin công việc thành công!")
     public ResponseEntity<ResJobDTO> updateJob(@RequestBody Job job) throws IdInvalidException {
         this.checkExist(job);
         if (job.getEndDate() != null && job.getStartDate() != null) {
             if (job.getEndDate().isBefore(job.getStartDate())) {
-                throw new IllegalArgumentException("End date must be after start date!");
+                throw new IllegalArgumentException("Ngày kết thúc phải sau ngày bắt đầu!");
             }
 
         }
         Job newJob = this.jobService.handleUpdateJob(job);
         if (newJob == null) {
-            throw new IdInvalidException("ID no exist! Please check your ID.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
         }
         return ResponseEntity.ok(this.jobService.convertToResJobDTO(newJob));
     }
 
     @DeleteMapping("/jobs/{id}")
-    @ApiMessage("Delete job")
+    @ApiMessage("Xóa công việc thành công!")
     public ResponseEntity<Void> deleteJob(@PathVariable("id") UUID id) throws IdInvalidException {
         Job job = this.jobService.handleGetJobById(id);
         if (job == null) {
-            throw new IdInvalidException("ID no exist! Please check your ID.");
+            throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
         }
         this.jobService.handleDeleteJob(id);
         return ResponseEntity.ok(null);
@@ -105,21 +105,21 @@ public class JobController {
 
         boolean isCheckNameExist = this.jobService.handleCheckExistByName(job.getName());
         if (isCheckNameExist) {
-            throw new IdInvalidException("Name existed! Please chose another email.");
+            throw new IdInvalidException("Tên đã tồn tại! Vui lòng chọn tên công việc khác.");
         }
         List<UUID> listIdSkills = job.getSkills().stream()
                 .map(item -> item.getId()).collect(Collectors.toList());
         for (UUID id : listIdSkills) {
             boolean isCheckSkillExist = this.skillService.handleCheckExistById(id);
             if (!isCheckSkillExist) {
-                throw new IdInvalidException("Skill not exist. Please check again!");
+                throw new IdInvalidException("Kỹ năng không tồn tại. Vui lòng kiểm tra lại!");
             }
         }
         boolean isCheckCompanyExist = this.companyService.handleCheckExistById(job.getCompany().getId());
         if (!isCheckCompanyExist) {
-            throw new IdInvalidException("Company not exist. Please check again!");
+            throw new IdInvalidException("Công ty không tồn tại. Vui lòng kiểm tra lại!");
         }
 
-        return "Valid success!";
+        return "Xác thực thành công!";
     }
 }

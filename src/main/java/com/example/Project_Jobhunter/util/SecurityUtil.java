@@ -43,6 +43,7 @@ public class SecurityUtil {
         this.jwtEncoder = jwtEncoder;
     }
 
+    // Create access token
     public String createAccessToken(String email, ResLoginDTO resLoginDTO) {
         Instant now = Instant.now();
         Instant validity = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);

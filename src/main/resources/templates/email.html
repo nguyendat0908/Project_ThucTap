@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thông báo xác nhận</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+      }
+      .container {
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        text-align: center;
+      }
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #003087;
+        margin-bottom: 10px;
+      }
+      .code {
+        font-size: 32px;
+        font-weight: bold;
+        color: #003087;
+        margin: 20px 0;
+      }
+      .message {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      .signature {
+        font-size: 14px;
+        color: #888;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">Mã xác nhận</div>
+      <div class="message">
+        Vui lòng sử dụng mã xác minh bên dưới để kích hoạt tài khoản của bạn:
+      </div>
+      <div class="code" th:text="${code}"></div>
+      <div class="message">
+        Mã sẽ hết hạn sau 30 phút và chỉ có thể sử dụng một lần.
+      </div>
+      <div class="message">
+        Cảm ơn,<br />
+        Chúc bạn đăng ký tài khoản thành công!
+      </div>
+      <div class="signature">Nguyễn Hoàng Đạt - 2121050643</div>
+    </div>
+  </body>
+</html>

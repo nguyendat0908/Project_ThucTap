@@ -32,10 +32,10 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Name is not empty!")
+    @NotBlank(message = "Tên không được để trống!")
     private String name;
 
-    @NotBlank(message = "Address is not empty!")
+    @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
 
     private String logo;

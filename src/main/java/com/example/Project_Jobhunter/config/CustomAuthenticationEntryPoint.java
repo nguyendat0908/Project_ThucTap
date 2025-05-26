@@ -33,7 +33,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         ResponseDTO<Object> res = new ResponseDTO<>();
         res.setStatusCode(HttpStatus.UNAUTHORIZED.value());
         res.setError(authException.getCause().getMessage());
-        res.setMessage("Invalid token (expired, incorrect format, or no JWT header!)");
+        res.setMessage("Token không hợp lệ (đã hết hạn, định dạng không đúng hoặc không có trong header JWT!)");
 
         objectMapper.writeValue(response.getWriter(), res);
     }

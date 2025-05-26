@@ -42,10 +42,10 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Name is not empty!")
+    @NotBlank(message = "Tên không được để trống!")
     private String name;
 
-    @NotBlank(message = "Location is not empty!")
+    @NotBlank(message = "Địa chỉ không được để trống!")
     private String location;
 
     private double salary;
