@@ -55,12 +55,25 @@ public class EmailService {
         }
     }
 
-    public void sendEmailFromTemplate(String to, String subject, String templateName) {
+    public void sendEmailActiveAccount(String to, String subject, String templateName, String code) {
         Context context = new Context();
-        List<Job> jobs = this.jobRepository.findAll();
-        String name = "Dat";
-        context.setVariable("name", name);
-        context.setVariable("jobs", jobs);
+        // List<Job> jobs = this.jobRepository.findAll();
+        // String name = "Dat";
+        // context.setVariable("name", name);
+        // context.setVariable("jobs", jobs);
+        context.setVariable("code", code);
+
+        String content = this.templateEngine.process(templateName, context);
+        this.sendEmailSync(to, subject, content, false, true);
+    }
+
+    public void sendEmailNewPassword(String to, String subject, String templateName, String newPassword) {
+        Context context = new Context();
+        // List<Job> jobs = this.jobRepository.findAll();
+        // String name = "Dat";
+        // context.setVariable("name", name);
+        // context.setVariable("jobs", jobs);
+        context.setVariable("newPassword", newPassword);
 
         String content = this.templateEngine.process(templateName, context);
         this.sendEmailSync(to, subject, content, false, true);

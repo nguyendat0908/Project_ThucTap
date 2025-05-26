@@ -15,14 +15,18 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Project_Jobhunter.domain.Permission;
 import com.example.Project_Jobhunter.domain.User;
 import com.example.Project_Jobhunter.dto.LoginDTO;
 import com.example.Project_Jobhunter.dto.response.ResLoginDTO;
+import com.example.Project_Jobhunter.dto.response.ResRegisterDTO;
+import com.example.Project_Jobhunter.dto.response.ResUserDTO;
 import com.example.Project_Jobhunter.dto.response.ResLoginDTO.RoleUserLogin;
 import com.example.Project_Jobhunter.repository.PermissionRepository;
+import com.example.Project_Jobhunter.service.AuthService;
 import com.example.Project_Jobhunter.service.UserService;
 import com.example.Project_Jobhunter.util.SecurityUtil;
 import com.example.Project_Jobhunter.util.annotation.ApiMessage;
@@ -42,13 +46,15 @@ public class AuthController {
     private final SecurityUtil securityUtil;
     private final PermissionRepository permissionRepository;
     private final UserService userService;
+    private final AuthService authService;
 
     public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil,
-            UserService userService, PermissionRepository permissionRepository) {
+            UserService userService, PermissionRepository permissionRepository, AuthService authService) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
         this.securityUtil = securityUtil;
         this.permissionRepository = permissionRepository;
+        this.authService = authService;
     }
 
     @PostMapping("/auth/login")
@@ -231,11 +237,59 @@ public class AuthController {
     }
 
     @PostMapping("/auth/register")
-    @ApiMessage("")
-    public String postMethodName(@RequestBody String entity) {
-        // TODO: process POST request
+    @ApiMessage("Mã OTP đã được gửi đến email của bạn thành công!")
+    public ResponseEntity<ResRegisterDTO> register(@RequestBody @Valid User user) throws IdInvalidException {
+        boolean isCheckEmail = this.userService.handleCheckExistByEmail(user.getEmail());
+        if (isCheckEmail) {
+            throw new IdInvalidException("Email " + user.getEmail() + " đã tồn tại, vui lòng sử dụng email khác.");
+        }
 
-        return entity;
+        // Send email
+        this.authService.handleRegisterUser(user);
+
+        ResRegisterDTO resRegisterDTO = new ResRegisterDTO();
+        resRegisterDTO.setMessage("Làm ơn kiểm tra email của bạn để kích hoạt tài khoản!");
+
+        return ResponseEntity.ok(resRegisterDTO);
+    }
+
+    @PostMapping("/auth/active")
+    @ApiMessage("Kích hoạt tài khoản thành công!")
+    public ResponseEntity<ResUserDTO> activeAccountRegister(@RequestParam String email, @RequestParam String code)
+            throws IdInvalidException {
+        if (this.authService.handleVerifyOTP(email, code)) {
+            User user = this.authService.handleActiveAccount(email);
+            return ResponseEntity.ok(this.userService.convertToResUserDTO(user));
+        } else {
+            throw new IdInvalidException("Mã OTP không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra lại!");
+        }
+    }
+
+    @PostMapping("/auth/forgot-password")
+    @ApiMessage("Mật khẩu mới đã được gửi đến email của bạn thành công!")
+    public ResponseEntity<ResRegisterDTO> forgotPassword(@RequestParam String email) throws IdInvalidException {
+
+        User user = this.userService.handleGetUserByUsername(email);
+        if (user == null) {
+            throw new IdInvalidException("Email không tồn tại, vui lòng kiểm tra lại email!");
+        }
+
+        this.authService.handleForgotPassword(email);
+
+        ResRegisterDTO resRegisterDTO = new ResRegisterDTO();
+        resRegisterDTO.setMessage("Vui lòng kiểm tra email của bạn để nhận mật khẩu mới!");
+
+        return ResponseEntity.ok(resRegisterDTO);
+    }
+
+    @PostMapping("/auth/update-info")
+    @ApiMessage("Cập nhật thông tin tài khoản thành công!")
+    public ResponseEntity<ResUserDTO> updateInfoUser(@RequestBody User user) throws IdInvalidException {
+        User newUser = this.authService.handleUpdateInfoUser(user);
+        if (newUser == null) {
+            throw new IdInvalidException("ID người dùng không hợp lệ hoặc không tồn tại!");
+        }
+        return ResponseEntity.ok(this.userService.convertToResUserDTO(newUser));
     }
 
 }
