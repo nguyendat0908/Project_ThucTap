@@ -66,4 +66,13 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
+    @ExceptionHandler(value = { StorageException.class })
+    public ResponseEntity<ResponseDTO<Object>> handleFileUploadException(Exception ex) {
+        ResponseDTO<Object> res = new ResponseDTO<Object>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Xảy ra ngoại lệ...");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
 }
