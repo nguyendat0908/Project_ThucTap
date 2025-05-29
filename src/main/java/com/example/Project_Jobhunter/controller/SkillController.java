@@ -10,8 +10,6 @@ import com.example.Project_Jobhunter.util.annotation.ApiMessage;
 import com.example.Project_Jobhunter.util.exception.IdInvalidException;
 import com.turkraft.springfilter.boot.Filter;
 
-import java.util.UUID;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +46,7 @@ public class SkillController {
     // Get a skill by ID
     @GetMapping("/skills/{id}")
     @ApiMessage("Hiển thị thông tin chi tiết một kỹ năng thành công!")
-    public ResponseEntity<Skill> getSkillById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Skill> getSkillById(@PathVariable("id") int id) throws IdInvalidException {
         Skill skill = this.skillService.handleGetSkillById(id);
         if (skill == null) {
             throw new IdInvalidException("Kỹ năng không tồn tại! Vui lòng kiểm tra lại ID.");
@@ -78,7 +76,7 @@ public class SkillController {
     // Delete a skill
     @DeleteMapping("/skills/{id}")
     @ApiMessage("Xóa kỹ năng thành công!")
-    public ResponseEntity<Void> deleteSkill(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Void> deleteSkill(@PathVariable("id") int id) throws IdInvalidException {
         Skill skill = this.skillService.handleGetSkillById(id);
         if (skill == null) {
             throw new IdInvalidException("Kỹ năng không tồn tại! Vui lòng kiểm tra lại ID.");

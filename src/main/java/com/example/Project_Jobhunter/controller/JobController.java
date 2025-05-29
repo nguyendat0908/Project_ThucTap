@@ -1,7 +1,6 @@
 package com.example.Project_Jobhunter.controller;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
@@ -59,7 +58,7 @@ public class JobController {
 
     @GetMapping("/jobs/{id}")
     @ApiMessage("Hiển thị chi tiết thông tin công việc thành công!")
-    public ResponseEntity<ResJobDTO> getJobById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<ResJobDTO> getJobById(@PathVariable("id") int id) throws IdInvalidException {
         Job job = this.jobService.handleGetJobById(id);
         if (job == null) {
             throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
@@ -92,7 +91,7 @@ public class JobController {
 
     @DeleteMapping("/jobs/{id}")
     @ApiMessage("Xóa công việc thành công!")
-    public ResponseEntity<Void> deleteJob(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Void> deleteJob(@PathVariable("id") int id) throws IdInvalidException {
         Job job = this.jobService.handleGetJobById(id);
         if (job == null) {
             throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
@@ -107,9 +106,9 @@ public class JobController {
         if (isCheckNameExist) {
             throw new IdInvalidException("Tên đã tồn tại! Vui lòng chọn tên công việc khác.");
         }
-        List<UUID> listIdSkills = job.getSkills().stream()
+        List<Integer> listIdSkills = job.getSkills().stream()
                 .map(item -> item.getId()).collect(Collectors.toList());
-        for (UUID id : listIdSkills) {
+        for (int id : listIdSkills) {
             boolean isCheckSkillExist = this.skillService.handleCheckExistById(id);
             if (!isCheckSkillExist) {
                 throw new IdInvalidException("Kỹ năng không tồn tại. Vui lòng kiểm tra lại!");

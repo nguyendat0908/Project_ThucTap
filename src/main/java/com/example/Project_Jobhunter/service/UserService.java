@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -57,7 +56,7 @@ public class UserService {
     }
 
     // Get a user by ID
-    public User handleGetUserById(UUID id) {
+    public User handleGetUserById(int id) {
         Optional<User> user = this.userRepository.findById(id);
         if (user.isPresent()) {
             return user.get();
@@ -117,7 +116,7 @@ public class UserService {
     }
 
     // Delete a user
-    public void handleDeleteUserById(UUID id) {
+    public void handleDeleteUserById(int id) {
         this.userRepository.deleteById(id);
     }
 

@@ -1,7 +1,6 @@
 package com.example.Project_Jobhunter.controller;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
@@ -86,7 +85,7 @@ public class AuthController {
                 RoleUserLogin roleUserLogin = new RoleUserLogin();
                 roleUserLogin.setName(currentUserDB.getRole().getName());
                 if (currentUserDB.getRole().getPermissions() != null) {
-                    List<UUID> listIdsPermission = currentUserDB.getRole().getPermissions().stream()
+                    List<Integer> listIdsPermission = currentUserDB.getRole().getPermissions().stream()
                             .map(item -> item.getId()).collect(Collectors.toList());
                     List<Permission> permissions = this.permissionRepository.findByIdIn(listIdsPermission);
                     List<String> namePermissions = permissions.stream().map(item -> item.getName())
@@ -137,7 +136,7 @@ public class AuthController {
                 RoleUserLogin roleUserLogin = new RoleUserLogin();
                 roleUserLogin.setName(currentUserDB.getRole().getName());
                 if (currentUserDB.getRole().getPermissions() != null) {
-                    List<UUID> listIdsPermission = currentUserDB.getRole().getPermissions().stream()
+                    List<Integer> listIdsPermission = currentUserDB.getRole().getPermissions().stream()
                             .map(item -> item.getId()).collect(Collectors.toList());
                     List<Permission> permissions = this.permissionRepository.findByIdIn(listIdsPermission);
                     List<String> namePermissions = permissions.stream().map(item -> item.getName())
@@ -184,7 +183,7 @@ public class AuthController {
                 RoleUserLogin roleUserLogin = new RoleUserLogin();
                 roleUserLogin.setName(currentUserDB.getRole().getName());
                 if (currentUserDB.getRole().getPermissions() != null) {
-                    List<UUID> listIdsPermission = currentUserDB.getRole().getPermissions().stream()
+                    List<Integer> listIdsPermission = currentUserDB.getRole().getPermissions().stream()
                             .map(item -> item.getId()).collect(Collectors.toList());
                     List<Permission> permissions = this.permissionRepository.findByIdIn(listIdsPermission);
                     List<String> namePermissions = permissions.stream().map(item -> item.getName())

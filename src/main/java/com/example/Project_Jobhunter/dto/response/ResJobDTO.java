@@ -3,7 +3,6 @@ package com.example.Project_Jobhunter.dto.response;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import com.example.Project_Jobhunter.util.constant.LevelEnum;
 
@@ -18,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResJobDTO {
 
-    private UUID id;
+    private int id;
     private String name;
     private String location;
     private double salary;
@@ -39,7 +38,7 @@ public class ResJobDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CompanyJob {
-        private UUID id;
+        private int id;
         private String name;
     }
 }

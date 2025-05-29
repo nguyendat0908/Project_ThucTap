@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.domain;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,8 +29,8 @@ import lombok.NoArgsConstructor;
 public class Skill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @NotBlank(message = "Tên không được để trống!")
     private String name;

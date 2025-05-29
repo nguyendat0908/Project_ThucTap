@@ -1,7 +1,6 @@
 package com.example.Project_Jobhunter.service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import com.example.Project_Jobhunter.domain.Job;
 import com.example.Project_Jobhunter.repository.JobRepository;
 
 import jakarta.mail.MessagingException;

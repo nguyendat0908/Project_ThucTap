@@ -1,7 +1,6 @@
 package com.example.Project_Jobhunter.dto.response;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import com.example.Project_Jobhunter.util.constant.GenderEnum;
 
@@ -16,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResUserDTO {
 
-    private UUID id;
+    private int id;
     private String name;
     private String email;
     private String address;
@@ -36,7 +35,7 @@ public class ResUserDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CompanyUser {
-        private UUID id;
+        private int id;
         private String name;
     }
 
@@ -45,7 +44,7 @@ public class ResUserDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RoleUser {
-        private UUID id;
+        private int id;
         private String name;
     }
 }

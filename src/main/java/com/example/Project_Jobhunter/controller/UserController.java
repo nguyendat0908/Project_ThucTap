@@ -17,8 +17,6 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 
-import java.util.UUID;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +68,7 @@ public class UserController {
     // Get a user by ID
     @GetMapping("/users/{id}")
     @ApiMessage("Hiển thị thông tin chi tiết một người dùng thành công!")
-    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") int id) throws IdInvalidException {
         User user = this.userService.handleGetUserById(id);
         if (user == null) {
             throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra lại ID.");
@@ -100,7 +98,7 @@ public class UserController {
     // Delete a user
     @DeleteMapping("/users/{id}")
     @ApiMessage("Xóa người dùng thành công!")
-    public ResponseEntity<Void> deleteUserById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Void> deleteUserById(@PathVariable("id") int id) throws IdInvalidException {
         User user = this.userService.handleGetUserById(id);
         if (user == null) {
             throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra lại ID.");

@@ -15,8 +15,6 @@ import com.example.Project_Jobhunter.util.annotation.ApiMessage;
 import com.example.Project_Jobhunter.util.exception.IdInvalidException;
 import com.turkraft.springfilter.boot.Filter;
 
-import java.util.UUID;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -60,7 +59,7 @@ public class ResumeController {
 
     @GetMapping("/resumes/{id}")
     @ApiMessage("Hiển thị thông tin chi tiết một bản sơ yếu lý lịch thành công!")
-    public ResponseEntity<ResResumeDTO> getResumeById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<ResResumeDTO> getResumeById(@PathVariable("id") int id) throws IdInvalidException {
         Resume resume = this.resumeService.handleGetResumeById(id);
         if (resume == null) {
             throw new IdInvalidException("Bản sơ yếu lý lịch không tồn tại! Vui lòng kiểm tra lại ID.");
@@ -96,13 +95,25 @@ public class ResumeController {
 
     @DeleteMapping("/resumes/{id}")
     @ApiMessage("Xóa bản sơ yếu lý lịch thành công!")
-    public ResponseEntity<Void> deleteResume(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Void> deleteResume(@PathVariable("id") int id) throws IdInvalidException {
         Resume resume = this.resumeService.handleGetResumeById(id);
         if (resume == null) {
             throw new IdInvalidException("Bản sơ yếu lý lịch không tồn tại! Vui lòng kiểm tra lại ID.");
         }
         this.resumeService.handleDeleteResume(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/resumes-history/{id}")
+    public ResponseEntity<ResPaginationDTO> getResumesHistoryByUser(@PathVariable("id") int id, Pageable pageable)
+            throws IdInvalidException {
+        User user = this.userService.handleGetUserById(id);
+        if (user == null) {
+            throw new IdInvalidException("Người dùng không tồn tại! Vui lòng kiểm tra lại ID.");
+
+        }
+
+        return ResponseEntity.ok(this.resumeService.handleGetResumesHistory(id, pageable));
     }
 
 }

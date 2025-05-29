@@ -1,7 +1,6 @@
 package com.example.Project_Jobhunter.dto.response;
 
 import java.util.List;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +21,7 @@ public class ResLoginDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UserLogin {
-        private UUID id;
+        private int id;
         private String email;
         private String name;
         private RoleUserLogin roleUserLogin;

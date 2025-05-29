@@ -12,7 +12,6 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 
-import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -49,7 +48,7 @@ public class PermissionController {
     // Get permission by ID
     @GetMapping("/permissions/{id}")
     @ApiMessage("Hiển thi thị thông tin chi tiết một quyền hạn thành công!")
-    public ResponseEntity<Permission> getPermissionById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Permission> getPermissionById(@PathVariable("id") int id) throws IdInvalidException {
         Permission permission = this.permissionService.handleGetPermissionById(id);
         if (permission == null) {
             throw new IdInvalidException("Quyền hạn không tồn tại! Vui lòng kiểm tra lại ID.");
@@ -87,7 +86,7 @@ public class PermissionController {
     // Delete a permission
     @DeleteMapping("/permissions/{id}")
     @ApiMessage("Xoá quyền hạn thành công!")
-    public ResponseEntity<Void> deletePermission(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Void> deletePermission(@PathVariable("id") int id) throws IdInvalidException {
         Permission permission = this.permissionService.handleGetPermissionById(id);
         if (permission == null) {
             throw new IdInvalidException("ID không tồn tại! Vui lòng kiểm tra ID của bạn.");
