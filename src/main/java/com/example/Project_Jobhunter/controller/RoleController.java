@@ -85,7 +85,7 @@ public class RoleController {
     // Update a role
     @PutMapping("/roles")
     @ApiMessage("Cập nhật thông tin vai trò thành công!")
-    public ResponseEntity<ResRoleDTO> updateRole(@RequestBody @Valid Role role) throws IdInvalidException {
+    public ResponseEntity<ResRoleDTO> updateRole(@RequestBody Role role) throws IdInvalidException {
 
         Role newRole = this.roleService.handleGetRoleById(role.getId());
         if (newRole == null) {
