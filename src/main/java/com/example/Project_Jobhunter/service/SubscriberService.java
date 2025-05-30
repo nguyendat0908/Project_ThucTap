@@ -2,12 +2,14 @@ package com.example.Project_Jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.example.Project_Jobhunter.domain.Job;
 import com.example.Project_Jobhunter.domain.Skill;
 import com.example.Project_Jobhunter.domain.Subscriber;
+import com.example.Project_Jobhunter.dto.response.ResEmailJob;
 import com.example.Project_Jobhunter.repository.JobRepository;
 import com.example.Project_Jobhunter.repository.SkillRepository;
 import com.example.Project_Jobhunter.repository.SubscriberRepository;
@@ -61,6 +63,18 @@ public class SubscriberService {
         return null;
     }
 
+    public ResEmailJob convertJobToSendEmail(Job job) {
+        ResEmailJob res = new ResEmailJob();
+        res.setName(job.getName());
+        res.setSalary(job.getSalary());
+        res.setCompany(new ResEmailJob.CompanyEmail(job.getCompany().getName()));
+        List<Skill> skills = job.getSkills();
+        List<ResEmailJob.SkillEmail> s = skills.stream().map(skill -> new ResEmailJob.SkillEmail(skill.getName()))
+                .collect(Collectors.toList());
+        res.setSkills(s);
+        return res;
+    }
+
     public void handleSendSubscribersEmailJobs() {
         List<Subscriber> listSubs = this.subscriberRepository.findAll();
         if (listSubs != null && listSubs.size() > 0) {
@@ -70,15 +84,15 @@ public class SubscriberService {
                     List<Job> listJobs = this.jobRepository.findBySkillsIn(listSkills);
                     if (listJobs != null && listJobs.size() > 0) {
 
-                        // List<ResEmailJob> arr = listJobs.stream().map(
-                        // job -> this.convertJobToSendEmail(job)).collect(Collectors.toList());
+                        List<ResEmailJob> arr = listJobs.stream().map(
+                                job -> this.convertJobToSendEmail(job)).collect(Collectors.toList());
 
                         this.emailService.sendEmailJobs(
                                 sub.getEmail(),
                                 "Cơ hội việc làm hot đang chờ đón bạn, khám phá ngay",
                                 "job",
                                 sub.getName(),
-                                listJobs);
+                                arr);
                     }
                 }
             }
