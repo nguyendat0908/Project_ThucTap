@@ -1,6 +1,7 @@
 package com.example.Project_Jobhunter.service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import com.example.Project_Jobhunter.domain.Job;
 import com.example.Project_Jobhunter.repository.JobRepository;
 
 import jakarta.mail.MessagingException;
@@ -30,14 +32,6 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
         this.jobRepository = jobRepository;
-    }
-
-    public void sendEmail() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("nguyendat090803@gmail.com");
-        message.setSubject("Test Email");
-        message.setText("This is a test email from JobHunter application.");
-        this.mailSender.send(message);
     }
 
     public void sendEmailSync(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
@@ -72,6 +66,15 @@ public class EmailService {
         // context.setVariable("name", name);
         // context.setVariable("jobs", jobs);
         context.setVariable("newPassword", newPassword);
+
+        String content = this.templateEngine.process(templateName, context);
+        this.sendEmailSync(to, subject, content, false, true);
+    }
+
+    public void sendEmailJobs(String to, String subject, String templateName, String username, Object value) {
+        Context context = new Context();
+        context.setVariable("name", username);
+        context.setVariable("jobs", value);
 
         String content = this.templateEngine.process(templateName, context);
         this.sendEmailSync(to, subject, content, false, true);

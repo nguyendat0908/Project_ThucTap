@@ -66,6 +66,11 @@ public class SkillService {
 
     // Delete a skill
     public void handleDeleteSkill(int id) {
+        Skill skill = this.handleGetSkillById(id);
+        if (skill != null) {
+            skill.getJobs().stream().forEach(item -> item.getSkills().remove(skill));
+            skill.getSubscribers().stream().forEach(item -> item.getSkills().remove(skill));
+        }
         this.skillRepository.deleteById(id);
     }
 
