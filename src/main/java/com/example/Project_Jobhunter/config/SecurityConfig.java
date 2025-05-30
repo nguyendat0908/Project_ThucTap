@@ -21,8 +21,17 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http,
                         CustomAuthenticationEntryPoint customAuthenticationEntryPoint)
                         throws Exception {
-                String[] whiteList = { "/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register",
-                                "/api/v1/email/**", "/api/v1/auth/active", "/api/v1/auth/forgot-password", "/storage/**" };
+                String[] whiteList = { "/",
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/refresh",
+                                "/api/v1/auth/register",
+                                "/api/v1/email/**",
+                                "/api/v1/auth/active",
+                                "/api/v1/auth/forgot-password",
+                                "/storage/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html" };
                 http
                                 .csrf((csrf) -> csrf.disable())
                                 .authorizeHttpRequests((requests) -> requests

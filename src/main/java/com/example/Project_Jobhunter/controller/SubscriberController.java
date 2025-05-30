@@ -79,8 +79,8 @@ public class SubscriberController {
 
     @GetMapping("/email")
     @ApiMessage("Gửi email thành công!")
-    @Scheduled(cron = "*/60 * * * * *")
-    @Transactional
+    // @Scheduled(cron = "*/60 * * * * *")
+    // @Transactional
     public String sendEmail() {
         this.subscriberService.handleSendSubscribersEmailJobs();
         return "OK";
