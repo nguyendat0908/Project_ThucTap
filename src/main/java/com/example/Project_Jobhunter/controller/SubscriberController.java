@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -77,6 +79,8 @@ public class SubscriberController {
 
     @GetMapping("/email")
     @ApiMessage("Gửi email thành công!")
+    @Scheduled(cron = "*/60 * * * * *")
+    @Transactional
     public String sendEmail() {
         this.subscriberService.handleSendSubscribersEmailJobs();
         return "OK";
