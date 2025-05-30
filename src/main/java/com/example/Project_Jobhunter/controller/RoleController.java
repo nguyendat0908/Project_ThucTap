@@ -16,7 +16,6 @@ import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
@@ -51,9 +50,9 @@ public class RoleController {
             throw new IdInvalidException("Tên vai trò đã tồn tại! Vui lòng chọn tên khác.");
         }
         if (role.getPermissions() != null) {
-            List<UUID> listIdPermissions = role.getPermissions().stream().map(Permission::getId)
+            List<Integer> listIdPermissions = role.getPermissions().stream().map(Permission::getId)
                     .collect(Collectors.toList());
-            for (UUID id : listIdPermissions) {
+            for (int id : listIdPermissions) {
                 boolean isCheckPermissionExist = this.permissionService.checkExistPermissionById(id);
                 if (!isCheckPermissionExist) {
                     throw new IdInvalidException("Quyền hạn không tồn tại. Vui lòng kiểm tra lại quyền hạn của bạn!");
@@ -68,7 +67,7 @@ public class RoleController {
     // Get role by ID
     @GetMapping("/roles/{id}")
     @ApiMessage("Hiển thị thông tin chi tiết một vai trò thành công!")
-    public ResponseEntity<ResRoleDTO> getRoleById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<ResRoleDTO> getRoleById(@PathVariable("id") int id) throws IdInvalidException {
         Role role = this.roleService.handleGetRoleById(id);
         if (role == null) {
             throw new IdInvalidException("Vai trò không tồn tại! Vui lòng kiểm tra lại ID.");
@@ -86,7 +85,7 @@ public class RoleController {
     // Update a role
     @PutMapping("/roles")
     @ApiMessage("Cập nhật thông tin vai trò thành công!")
-    public ResponseEntity<ResRoleDTO> updateRole(@RequestBody @Valid Role role) throws IdInvalidException {
+    public ResponseEntity<ResRoleDTO> updateRole(@RequestBody Role role) throws IdInvalidException {
 
         Role newRole = this.roleService.handleGetRoleById(role.getId());
         if (newRole == null) {
@@ -98,9 +97,9 @@ public class RoleController {
             throw new IdInvalidException("Tên vai trò đã tồn tại! Vui lòng chọn tên khác.");
         }
         if (role.getPermissions() != null) {
-            List<UUID> listIdPermissions = role.getPermissions().stream().map(Permission::getId)
+            List<Integer> listIdPermissions = role.getPermissions().stream().map(Permission::getId)
                     .collect(Collectors.toList());
-            for (UUID id : listIdPermissions) {
+            for (int id : listIdPermissions) {
                 boolean isCheckPermissionExist = this.permissionService.checkExistPermissionById(id);
                 if (!isCheckPermissionExist) {
                     throw new IdInvalidException("Quyền hạn không tồn tại. Vui lòng kiểm tra lại quyền hạn của bạn!");
@@ -115,7 +114,7 @@ public class RoleController {
     // Delete a role
     @DeleteMapping("/roles/{id}")
     @ApiMessage("Xóa vai trò thành công!")
-    public ResponseEntity<Void> deleteRole(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Void> deleteRole(@PathVariable("id") int id) throws IdInvalidException {
         Role role = this.roleService.handleGetRoleById(id);
         if (role == null) {
             throw new IdInvalidException("Vai trò không tồn tại! Vui lòng kiểm tra lại ID.");

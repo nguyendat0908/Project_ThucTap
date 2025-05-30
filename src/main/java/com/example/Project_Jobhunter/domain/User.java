@@ -2,11 +2,11 @@ package com.example.Project_Jobhunter.domain;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 import com.example.Project_Jobhunter.util.constant.GenderEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,8 +35,8 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @NotBlank(message = "Tên không được để trống!")
     private String name;
@@ -67,7 +67,7 @@ public class User {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Resume> resumes;
 

@@ -2,11 +2,11 @@ package com.example.Project_Jobhunter.domain;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @NotBlank(message = "Tên không được để trống!")
     private String name;
@@ -47,7 +47,7 @@ public class Role {
     private Instant createdAt;
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> users;
 

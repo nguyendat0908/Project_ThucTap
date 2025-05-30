@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +27,7 @@ public class CompanyService {
     }
 
     // Get a company by ID
-    public Company handleGetCompanyById(UUID id) {
+    public Company handleGetCompanyById(int id) {
         Optional<Company> companyOptional = this.companyRepository.findById(id);
         if (companyOptional.isPresent()) {
             return companyOptional.get();
@@ -74,7 +73,7 @@ public class CompanyService {
     }
 
     // Delete a company
-    public void handleDeleteCompany(UUID id) {
+    public void handleDeleteCompany(int id) {
         this.companyRepository.deleteById(id);
     }
 
@@ -83,7 +82,7 @@ public class CompanyService {
         return this.companyRepository.existsByName(name);
     }
 
-    public boolean handleCheckExistById(UUID id) {
+    public boolean handleCheckExistById(int id) {
         return this.companyRepository.existsById(id);
     }
 

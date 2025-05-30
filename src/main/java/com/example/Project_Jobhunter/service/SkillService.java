@@ -1,7 +1,6 @@
 package com.example.Project_Jobhunter.service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +26,7 @@ public class SkillService {
     }
 
     // Get a skill by ID
-    public Skill handleGetSkillById(UUID id) {
+    public Skill handleGetSkillById(int id) {
         Optional<Skill> skill = this.skillRepository.findById(id);
         if (skill.isPresent()) {
             return skill.get();
@@ -66,7 +65,12 @@ public class SkillService {
     }
 
     // Delete a skill
-    public void handleDeleteSkill(UUID id) {
+    public void handleDeleteSkill(int id) {
+        Skill skill = this.handleGetSkillById(id);
+        if (skill != null) {
+            skill.getJobs().stream().forEach(item -> item.getSkills().remove(skill));
+            skill.getSubscribers().stream().forEach(item -> item.getSkills().remove(skill));
+        }
         this.skillRepository.deleteById(id);
     }
 
@@ -76,7 +80,7 @@ public class SkillService {
     }
 
     // Check exist id
-    public boolean handleCheckExistById(UUID id) {
+    public boolean handleCheckExistById(int id) {
         return this.skillRepository.existsById(id);
     }
 }

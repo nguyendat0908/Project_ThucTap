@@ -1,7 +1,7 @@
 package com.example.Project_Jobhunter.domain;
 
+
 import java.time.Instant;
-import java.util.UUID;
 
 import com.example.Project_Jobhunter.util.constant.StatusEnum;
 
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class Resume {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private String email;
     private String url;

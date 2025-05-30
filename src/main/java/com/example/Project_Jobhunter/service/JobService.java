@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -36,7 +35,7 @@ public class JobService {
 
         // Check skills
         if (job.getSkills() != null) {
-            List<UUID> skillIds = job.getSkills().stream()
+            List<Integer> skillIds = job.getSkills().stream()
                     .map(skill -> skill.getId())
                     .toList();
             List<Skill> skills = this.skillRepository.findByIdIn(skillIds);
@@ -52,7 +51,7 @@ public class JobService {
     }
 
     // Get a job by ID
-    public Job handleGetJobById(UUID id) {
+    public Job handleGetJobById(int id) {
         Optional<Job> jobOptional = this.jobRepository.findById(id);
         if (jobOptional.isPresent()) {
             return jobOptional.get();
@@ -85,7 +84,7 @@ public class JobService {
         Job currentJob = this.handleGetJobById(job.getId());
         if (currentJob != null) {
             if (job.getSkills() != null) {
-                List<UUID> listIdSkills = job.getSkills().stream().map(item -> item.getId())
+                List<Integer> listIdSkills = job.getSkills().stream().map(item -> item.getId())
                         .collect(Collectors.toList());
                 List<Skill> listSkills = this.skillRepository.findByIdIn(listIdSkills);
                 currentJob.setSkills(listSkills);
@@ -112,7 +111,8 @@ public class JobService {
     }
 
     // Delete a job
-    public void handleDeleteJob(UUID id) {
+    public void handleDeleteJob(int id) {
+        Job job = this.handleGetJobById(id);
         this.jobRepository.deleteById(id);
     }
 

@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.dto.response;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResRoleDTO {
 
-    private UUID id;
+    private int id;
     private String name;
     private boolean active;
     private String description;

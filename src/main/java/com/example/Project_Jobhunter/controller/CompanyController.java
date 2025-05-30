@@ -12,7 +12,6 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 
-import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -48,7 +47,7 @@ public class CompanyController {
     // Get a company by ID
     @GetMapping("/companies/{id}")
     @ApiMessage("Hiển thị thông tin chi tiết một công ty thành công!")
-    public ResponseEntity<Company> getCompanyById(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Company> getCompanyById(@PathVariable("id") int id) throws IdInvalidException {
         Company company = this.companyService.handleGetCompanyById(id);
         if (company == null) {
             throw new IdInvalidException("Không tìm thấy công ty! Vui lòng kiểm tra lại ID.");
@@ -81,7 +80,7 @@ public class CompanyController {
     // Delete a company
     @DeleteMapping("/companies/{id}")
     @ApiMessage("Xóa công ty thành công!")
-    public ResponseEntity<Void> deleteCompany(@PathVariable("id") UUID id) throws IdInvalidException {
+    public ResponseEntity<Void> deleteCompany(@PathVariable("id") int id) throws IdInvalidException {
         Company company = this.companyService.handleGetCompanyById(id);
         if (company == null) {
             throw new IdInvalidException("Công ty không tồn tại! Vui lòng kiểm tra lại ID.");

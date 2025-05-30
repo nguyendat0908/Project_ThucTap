@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +43,7 @@ public class ResumeService {
     }
 
     // Get a resume by ID
-    public Resume handleGetResumeById(UUID id) {
+    public Resume handleGetResumeById(int id) {
         Optional<Resume> resumeOptional = this.resumeRepository.findById(id);
         if (resumeOptional.isPresent()) {
             return resumeOptional.get();
@@ -100,8 +99,30 @@ public class ResumeService {
     }
 
     // Delete a resume
-    public void handleDeleteResume(UUID id) {
+    public void handleDeleteResume(int id) {
         this.resumeRepository.deleteById(id);
+    }
+
+    // Get resume by user
+    public ResPaginationDTO handleGetResumesHistory(int userId, Pageable pageable) {
+        Page<Resume> resumePage = this.resumeRepository.findAllByUserId(userId, pageable);
+
+        ResPaginationDTO resPaginationDTO = new ResPaginationDTO();
+        ResPaginationDTO.Meta meta = new ResPaginationDTO.Meta();
+
+        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setPageSize(pageable.getPageSize());
+        meta.setPages(resumePage.getTotalPages());
+        meta.setTotal(resumePage.getTotalElements());
+        resPaginationDTO.setMeta(meta);
+
+        // Kết quả
+        List<ResResumeDTO> resumeDTOs = resumePage.getContent().stream()
+                .map(this::convertToResumeDTO)
+                .toList();
+        resPaginationDTO.setResult(resumeDTOs);
+
+        return resPaginationDTO;
     }
 
     // Convert a resume to resumeDTO

@@ -19,6 +19,16 @@ import com.example.Project_Jobhunter.dto.response.ResponseDTO;
 @ControllerAdvice
 public class GlobalException {
 
+    // Xử lý ngoại lệ chưa được định nghĩa
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseDTO<Object>> handleAllException(Exception ex) {
+        ResponseDTO<Object> res = new ResponseDTO<Object>();
+        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        res.setError("Internal server error");
+        res.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+    }
+
     @ExceptionHandler(value = { IdInvalidException.class,
             UsernameNotFoundException.class, IllegalArgumentException.class })
     public ResponseEntity<ResponseDTO<Object>> handleIdException(Exception ex) {
@@ -73,6 +83,15 @@ public class GlobalException {
         res.setError(ex.getMessage());
         res.setMessage("Xảy ra ngoại lệ...");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
+    @ExceptionHandler(value = { PermissionException.class })
+    public ResponseEntity<ResponseDTO<Object>> handlePermissionException(Exception ex) {
+        ResponseDTO<Object> res = new ResponseDTO<Object>();
+        res.setStatusCode(HttpStatus.FORBIDDEN.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Forbidden...");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(res);
     }
 
 }

@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -32,7 +31,7 @@ public class RoleService {
     public Role handleCreateRole(Role role) {
 
         if (role.getPermissions() != null) {
-            List<UUID> permissionIds = role.getPermissions().stream()
+            List<Integer> permissionIds = role.getPermissions().stream()
                     .map(Permission::getId)
                     .collect(Collectors.toList());
             List<Permission> permissions = this.permissionRepository.findByIdIn(permissionIds);
@@ -43,7 +42,7 @@ public class RoleService {
     }
 
     // Get a role by ID
-    public Role handleGetRoleById(UUID id) {
+    public Role handleGetRoleById(int id) {
         Optional<Role> roleOptional = this.roleRepository.findById(id);
         if (roleOptional.isPresent()) {
             return roleOptional.get();
@@ -78,7 +77,7 @@ public class RoleService {
 
         // Check permission
         if (role.getPermissions() != null) {
-            List<UUID> permissionIds = role.getPermissions().stream()
+            List<Integer> permissionIds = role.getPermissions().stream()
                     .map(Permission::getId)
                     .collect(Collectors.toList());
             List<Permission> permissions = this.permissionRepository.findByIdIn(permissionIds);
@@ -100,7 +99,7 @@ public class RoleService {
     }
 
     // Delete a role
-    public void handleDeleteRole(UUID id) {
+    public void handleDeleteRole(int id) {
         this.roleRepository.deleteById(id);
     }
 

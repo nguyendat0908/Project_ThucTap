@@ -2,7 +2,6 @@ package com.example.Project_Jobhunter.domain;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,8 +27,8 @@ import lombok.NoArgsConstructor;
 public class Permission {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @NotBlank(message = "Tên không được để trống!")
     private String name;

@@ -1,7 +1,6 @@
 package com.example.Project_Jobhunter.service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +26,7 @@ public class PermissionService {
     }
 
     // Get permission by ID
-    public Permission handleGetPermissionById(UUID id) {
+    public Permission handleGetPermissionById(int id) {
         Optional<Permission> permissionOptional = this.permissionRepository.findById(id);
         if (permissionOptional.isPresent()) {
             return permissionOptional.get();
@@ -72,7 +71,11 @@ public class PermissionService {
     }
 
     // Delete a permission
-    public void handleDeletePermission(UUID id) {
+    public void handleDeletePermission(int id) {
+
+        Permission permission = this.handleGetPermissionById(id);
+        permission.getRoles().forEach(item -> item.getPermissions().remove(permission));
+
         this.permissionRepository.deleteById(id);
     }
 
@@ -82,7 +85,7 @@ public class PermissionService {
     }
 
     // Check if permission exists by ID
-    public boolean checkExistPermissionById(UUID id) {
+    public boolean checkExistPermissionById(int id) {
         return this.permissionRepository.existsById(id);
     }
 }
